@@ -1,0 +1,3 @@
+D19G    ~/Data/TrimmedMSSData/D19G_R1.fastq.gz  ~/Data/TrimmedMSSData/D19G_R2.fastq.gz 
+D33G    ~/Data/TrimmedMSSData/D33G_R1.fastq.gz  ~/Data/TrimmedMSSData/D33G_R2.fastq.gz
+

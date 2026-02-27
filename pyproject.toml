@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "humann4_tools"
+version = "0.2.0"
+description = "Comprehensive toolkit for metagenomic analysis with HUMAnN4"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["bioinformatics", "metagenomics", "HUMAnN4", "microbiome"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+dependencies = [
+    "pandas>=1.3.0",
+    "numpy>=1.20.0",
+    "matplotlib>=3.4.0",
+    "seaborn>=0.11.0",
+    "scikit-learn>=0.24.0",
+    "statsmodels>=0.12.0",
+    "scikit-posthocs>=0.7.0",
+    "tqdm>=4.62.0",
+    "psutil>=5.8.0",
+    "setuptools>=60.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black>=21.5b2",
+    "isort>=5.9.1",
+    "flake8>=3.9.2",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/humann4_tools"
+"Bug Tracker" = "https://github.com/yourusername/humann4_tools/issues"
+
+[project.scripts]
+humann4-tools = "src.humann4_tools.cli.main_cli:main"
+humann4-kneaddata = "src.humann4_tools.cli.kneaddata_cli:main"
+humann4-humann4 = "src.humann4_tools.cli.humann4_cli:main"
+humann4-join = "src.humann4_tools.cli.join_cli:main"
+humann4-stats = "src.humann4_tools.cli.stats_cli:main"
+humann4-diff = "src.humann4_tools.cli.diff_cli:main"
+humann4-viz = "src.humann4_tools.cli.viz_cli:main"
+cli-example = "cli_example:main"
+humann4-tools-simple = "src.humann4_tools.cli.main_cli_simple:main"
+humann4-humann4-simple = "src.humann4_tools.cli.humann4_cli_simple:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+include = ["cli_example.py"]

@@ -1,0 +1,200 @@
+# this works except that doesn't seem to concatenate:
+humann4-humann4 --input-files MP00623Control_1_output.fastq.gz MP00623Control_2_output.fastq.gz --output-dir MP00623Control_humann_output
+
+# For paired-end data (works as of 4/13/2025) ###
+
+humann4-kneaddata --input-files MP00501NL_1_output.fastq.gz MP00501NL_2_output.fastq.gz --paired  --output-dir ./kneaddata_output --threads 8  --reference-dbs /home/david/Databases/KneadDataDB /home/david/Databases/BT2ContaminantDB
+
+# For metadata-driven input
+humann4-kneaddata --metadata-file metadata.csv --seq-dir /path/to/sequences --reference-dbs human --paired --output-dir ./kneaddata_output
+
+# test skip-kneaddata 
+  /home/david/Data/MSSData/TommyData/NCNP_outputs/humann4_kneaddata_fix.py \
+  --input-file1 MP00501NL_1_output.fastq.gz \
+  --input-file2 MP00501NL_2_output.fastq.gz \
+  --output-dir ./MP00501NL_kneaddata_output \
+  --reference-dbs /home/david/Databases/KneadDataDB /home/david/Databases/BT2ContaminantDB \
+  --threads 4
+
+
+
+humann4-tools --run-preprocessing --input-fastq MP00609L_1_output.fastq.gz MP00609L_2_output.fastq.gz \
+    --output-dir Tommy.out \
+    --paired \
+    --threads 12 \
+    --pathway-dir pathway.out \
+    --gene-dir gene.out \
+    --sample-key TommyFiles.txt \
+    --log-level DEBUG \
+    --paired \
+    --humann4-nucleotide-db /home/david/Databases/Humann45Databases/chocophlan \
+    --humann4-protein-db /home/david/Databases/Humann45Databases/uniref
+
+
+humann4-tools --run-preprocessing --sample-key TommyFiles.txt --pathway-dir pathway.out --gene-dir gene.out --input-fastq MP00609L_1_output.fastq.gz MP00609L_2_output.fastq.gz --output-dir  …
+      Tommy.out --paired --threads 12 --pathway-dir pathway.out --gene-dir gene.out --sample-key sample_key.csv --log-level
+      DEBUG --humann4-nucleotide-db /home/david/Databases/Humann45Databases/chocophlan --humann4-protein-db
+      /home/david/Databases/Humann45Databases/uniref --no-interactive --max-memory 24g --sample-key TommyFiles.txt --pathway-dir pathway.out --gene-dir gene.out
+
+    #--skip-kneaddata \
+
+~/Documents/Code/humann4_tools/test_humann4_tools.py \
+     --input-fastq MP00609L_1_output.fastq.gz MP00609L_2_output.fastq.gz \
+    --output-dir Tommy.out     --paired     --threads 12 \
+    --humann4-nucleotide-db /home/david/Databases/Humann45Databases/chocophlan \
+    --humann4-protein-db /home/david/Databases/Humann45Databases/uniref
+
+humann4-tools --log-file test.log \
+    --log-level DEBUG \
+    --output-dir tommyt.out \
+    --run-preprocessing \
+    --skip-kneaddata \
+    --paired \
+    --threads 12 \
+    --humann4-output-dir ~/Documents/Alignments/Humann4Alignments \
+    --kneaddata-output-dir ~/Data/MSSData/TommyData/NCNP_outputs \
+    --kneaddata-output-pattern "*_?_output.fastq.gz" \
+    --r1-suffix "_1_output.fastq.gz" \
+    --r2-suffix "_2_output.fastq.gz" \
+    --samples-file TommyFiles.txt \
+    --pathway-dir ~/Documents/Alignments/Humann4Alignments/PathwayAbundance \
+    --gene-dir ~/Documents/Alignments/Humann4Alignments/GeneFamilies \
+    --input-fastq ~/Data/MSSData/TommyData/NCNP_outputs/*fastq.gz \
+    --skip-downstream
+
+humann4-tools --log-file test.log \
+	--log-level DEBUG \
+	--output-dir test.out \
+	--output-prefix test- \
+	--run-preprocessing \
+	--paired \
+	--kneaddata-dbs  /home/david/Databases/KneadDataDB /home/david/Databases/BT2ContaminantDB \
+	--threads 12 \
+  	--kneaddata-output-dir /path/to/kneaddata/results \
+  	--humann4-output-dir /path/to/humann4/results \
+	--seq-dir /home/david/Data/TrimmedMSSFiles/ \
+	--input-fastq /home/david/Data/TrimmedMSSFiles/D19G_R1.fastq /home/david/Data/TrimmedMSSFiles/D19G_R2.fastq \
+	--sample-key TestKey.csv \
+	--samples-file ExampleFileList.txt \
+	--use-metadata \
+	--pathway-dir test.out \
+	--gene-dir test.out \
+	--annotations-dir annotations \
+	--skip-downstream
+	
+
+
+# parallel	
+humann4-tools --run-preprocessing \
+	--log-file test.log3 \
+	--log-level DEBUG \
+	--output-dir test.out3 \
+	--output-prefix test- \
+	--kneaddata-dbs  /home/david/Databases/KneadDataDB /home/david/Databases/BT2ContaminantDB \
+	--threads-per-sample 12 \
+	--sample-key TestKey.csv \
+	--use-metadata \
+	--seq-dir /home/david/Data/TrimmedMSSFiles/ \
+  	--kneaddata-output-dir ~/Data/TrimmedMSSFiles \
+  	--humann4-output-dir ~/Documents/Alignments/Humann4Alignments \
+	--pathway-dir test.out3 \
+	--gene-dir test.out3 \
+	--group-col "Group" \
+	--paired \
+	--decontaminate-pairs strict \
+	--skip-kneaddata \
+	--kneaddata-output-files ~/Data/TrimmedMSSFiles/D19G_R1_kneaddata_paired_1.fastq \
+	 ~/Data/TrimmedMSSFiles/D19G_R1_kneaddata_paired_2.fastq \
+	~/Data/TrimmedMSSFiles/D33G_R1_kneaddata_paired_1.fastq \
+	 ~/Data/TrimmedMSSFiles/D33G_R1_kneaddata_paired_2.fastq \
+	--use-parallel \
+	--annotations-dir annotations 
+
+# not parallel 
+humann4-tools --run-preprocessing \
+	--log-file test.log4 \
+	--log-level DEBUG \
+	--output-dir test.out4 \
+	--output-prefix test- \
+	--kneaddata-dbs  /home/david/Databases/KneadDataDB /home/david/Databases/BT2ContaminantDB \
+	--sample-key TestKey.csv \
+	--use-metadata \
+	--seq-dir /home/david/Data/TrimmedMSSFiles/ \
+  	--kneaddata-output-dir ~/Data/TrimmedMSSFiles \
+  	--humann4-output-dir ~/Documents/Alignments/Humann4Alignments \
+	--pathway-dir test.out4 \
+	--gene-dir test.out4 \
+	--group-col "Group" \
+	--paired \
+	--decontaminate-pairs strict \
+	--skip-kneaddata \
+	--kneaddata-output-files ~/Data/TrimmedMSSFiles/D19G_R1_kneaddata_paired_1.fastq \
+	 ~/Data/TrimmedMSSFiles/D19G_R1_kneaddata_paired_2.fastq \
+	--threads 24 \
+	--annotations-dir annotations 
+
+
+humann4-preprocess --input-fastq ~/Data/TrimmedMSSFiles/D19G_R1.fastq ~/Data/TrimmedMSSFiles/D19G_R2.fastq \
+	 ~/Data/TrimmedMSSFiles/D33G_R1.fastq ~/Data/TrimmedMSSFiles/D33G_R2.fastq \
+	--paired \
+	--threads 24 \
+	--kneaddata-dbs  /home/david/Databases/KneadDataDB /home/david/Databases/BT2ContaminantDB \
+	--kneaddata-output-dir ~/Data/TrimmedMSSFiles \
+	--log-file NewPreprocess.log
+
+humann4-viz --abundance-file pathways.tsv --metadata-file metadata.csv --feature "PWY-7111: pyruvate fermentation to isobutanol"
+
+humann4-viz --help-info
+
+# Run visualizations with standard options
+humann4-viz --abundance-file pathways.tsv --metadata-file metadata.csv
+
+
+# Generate boxplots for the top 10 most abundant pathways
+humann4-viz --abundance-file pathways.tsv --metadata-file metadata.csv --box-top-n 10
+
+# Customize the grouping variable
+humann4-viz --abundance-file
+	
+
+# Basic usage with paired-end reads
+python humann4_tools_preprocessing.py --input-fastq sample1_R1.fastq.gz sample1_R2.fastq.gz --paired --threads 8
+
+# Skip KneadData and use existing files
+python humann4_tools_preprocessing.py --input-fastq sample1_R1.fastq.gz --skip-kneaddata --kneaddata-output-files /path/to/kneaddata/sample1_kneaddata.fastq
+
+
+humann4-tools --run-full-pipeline         --log-file test.log     --log-level DEBUG       --output-dir test.out2  --output-prefix test-   --kneaddata-dbs  /home/david/Databases/KneadDataDB /home/david/Databases/BT2ContaminantDB       --threads 24    --sample-key TestKey.csv        --use-metadata  --seq-dir /home/david/Data/TrimmedMSSFiles/     --kneaddata-output-dir ~/Data/TrimmedMSSFiles           --humann4-output-dir ~/Documents/Alignments/Humann4Alignments   --pathway-dir test.out2         --gene-dir test.out2    --group-col "Group"     --paired        --decontaminate-pairs strict    --annotations-dir annotations
+	
+
+
+
+from humann4_tools import run_preprocessing_and_analysis
+
+pathway_file, gene_file, success = run_preprocessing_and_analysis(
+    input_fastq=["reads_1.fastq", "reads_2.fastq"],
+    sample_key="metadata.csv",
+    output_dir="results",
+    paired=True,
+    threads=8,
+    kneaddata_db="/path/to/kneaddata_db",
+    nucleotide_db="/path/to/chocophlan",
+    protein_db="/path/to/uniref",
+    group_col="Group"
+)
+
+
+	--samples-file ExampleFileList.txt \
+	
+
+--input-fastq /home/david/Data/TrimmedMSSFiles/D19G_R1.fastq /home/david/Data/TrimmedMSSFiles/D19G_R2.fastq \
+
+
+
+Sample1	/path/to/sample1.files/Sample1_R1.fastq.gz  /path/to/sample1.files/Sample1_R2.fastq.gz 
+Sample2	/path/to/sample2.files/Sample2_R1.fastq.gz  /path/to/sample2.files/Sample2_R2.fastq.gz
+
+  	--kneaddata-output-dir ~/Data/TrimmedMSSFiles \
+  	--humann4-output-dir ~/Documents/Alignments/Humann4Alignments \
+
+

@@ -1,0 +1,52 @@
+<invoke name="artifacts">
+<parameter name="command">create</parameter>
+<parameter name="id">config-json</parameter>
+<parameter name="type">application/vnd.ant.code</parameter>
+<parameter name="language">json</parameter>
+<parameter name="title">default_config.json</parameter>
+<parameter name="content">{
+  "general": {
+    "threads": 4,
+    "log_level": "INFO"
+  },
+  "kneaddata": {
+    "reference_dbs": ["human_db"],
+    "decontaminate_pairs": "strict",
+    "trimmomatic_options": "SLIDINGWINDOW:4:20,MINLEN:50",
+    "bowtie2_options": "--very-sensitive",
+    "threads": 8
+  },
+  "humann4": {
+    "nucleotide_db": "/path/to/chocophlan",
+    "protein_db": "/path/to/uniref",
+    "threads": 8,
+    "memory": "8G",
+    "bypass_nucleotide_search": false,
+    "bypass_translated_search": false,
+    "taxonomic_profile": null
+  },
+  "join": {
+    "units": "cpm",
+    "strip_headers": true,
+    "update_snames": false
+  },
+  "stats": {
+    "alpha": 0.05,
+    "group_col": "Group",
+    "methods": ["wilcoxon", "kruskal", "permanova"]
+  },
+  "diff": {
+    "methods": ["aldex2", "ancom", "ancom-bc"],
+    "exclude_unmapped": true,
+    "alpha": 0.05,
+    "group_col": "Group"
+  },
+  "viz": {
+    "format": "svg",
+    "dpi": 300,
+    "group_col": "Group",
+    "top_n": 25,
+    "log_transform": true
+  }
+}</parameter>
+</invoke>
